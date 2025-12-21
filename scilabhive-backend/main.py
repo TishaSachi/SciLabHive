@@ -1,8 +1,11 @@
 from fastapi import FastAPI
 from database import engine
 from sqlalchemy import text
+from models import Base
 
 app = FastAPI()
+
+Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def test_db():
