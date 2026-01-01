@@ -5,7 +5,8 @@ from sqlalchemy import (
     Text,
     Boolean,
     DateTime,
-    ForeignKey
+    ForeignKey,
+    TIMESTAMP
 )
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
