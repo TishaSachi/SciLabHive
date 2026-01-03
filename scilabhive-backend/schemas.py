@@ -26,6 +26,27 @@ class Token(BaseModel):
     token_type: str = "bearer"
 
 
+# =========================
+# EXPERIMENT SCHEMAS
+# =========================
+class ExperimentCreate(BaseModel):
+    title: str
+    experiment_type: str
+    description: str | None = None
+
+
+class ExperimentResponse(BaseModel):
+    experiment_id: int
+    title: str
+    experiment_type: str
+    description: str | None
+    user_id: int
+
+    class Config:
+        from_attributes = True
+
+
+
 
 
 
