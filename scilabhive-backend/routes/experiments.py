@@ -45,3 +45,51 @@ def get_my_experiments(
     return db.query(Experiment).filter(
         Experiment.user_id == current_user.id
     ).all()
+
+# --------- update the experiment -------------------------------
+
+@router.put("/{experiment_id}", response_model=ExperimentResponse)
+def update_experiment(
+    experiment_id: int,
+    updated_data: ExperimentCreate,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    experiment = db.query(Experiment).filter(
+        Experiment.experiment_id == experiment_id,
+        Experiment.user_id == current_user.id
+    ).first()
+
+    if not experiment:
+        raise HTTPException(status_code=404, detail="Experiment not found")
+
+    experiment.title = updated_data.title
+    experiment.experiment_type = updated_data.experiment_type
+    experiment.description = updated_data.description
+
+    db.commit()
+    db.refresh(experiment)
+
+    return experiment
+
+
+# ------------------- Delete the experiment ------------------------
+@router.delete("/{experiment_id}", status_code=204)
+def delete_experiment(
+    experiment_id: int,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    experiment = db.query(Experiment).filter(
+        Experiment.experiment_id == experiment_id,
+        Experiment.user_id == current_user.id
+    ).first()
+
+    if not experiment:
+        raise HTTPException(status_code=404, detail="Experiment not found")
+
+    db.delete(experiment)
+    db.commit()
+
+    return
+
