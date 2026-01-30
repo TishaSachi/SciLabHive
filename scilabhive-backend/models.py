@@ -14,9 +14,8 @@ from sqlalchemy.sql import func
 from database import Base
 
 
-# =========================
-# USERS TABLE
-# =========================
+# ----------------------------- USERS TABLE ---------------------------------------
+
 class User(Base):
     __tablename__ = "users"
 
@@ -38,9 +37,9 @@ class User(Base):
     )
 
 
-# =========================
-# EXPERIMENTS TABLE
-# =========================
+
+# ------------------------------------ EXPERIMENTS TABLE -----------------------------------------
+
 class Experiment(Base):
     __tablename__ = "experiments"
 
@@ -72,9 +71,9 @@ class Experiment(Base):
     )
 
 
-# =========================
-# EXPERIMENT PARAMETERS TABLE
-# =========================
+
+# --------------------------------------- EXPERIMENT PARAMETERS TABLE ---------------------------------------
+
 class ExperimentParameter(Base):
     __tablename__ = "experiment_parameters"
 
@@ -93,9 +92,9 @@ class ExperimentParameter(Base):
     experiment = relationship("Experiment", back_populates="parameters")
 
 
-# =========================
-# EXPERIMENT RESULTS TABLE
-# =========================
+
+# ------------------------------------ EXPERIMENT RESULTS TABLE --------------------------------------------
+
 class ExperimentResult(Base):
     __tablename__ = "experiment_results"
 

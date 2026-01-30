@@ -11,9 +11,9 @@ router = APIRouter(
     tags=["Experiments"]
 )
 
-# -------------------------
-# CREATE experiment
-# -------------------------
+
+#  ------------------------------------- CREATE experiment ---------------------------
+
 @router.post("/", response_model=ExperimentResponse)
 def create_experiment(
     experiment: ExperimentCreate,
@@ -34,9 +34,8 @@ def create_experiment(
     return new_experiment
 
 
-# -------------------------
-# GET my experiments
-# -------------------------
+# ----------------------------------- GET my experiments -------------------------------------
+
 @router.get("/", response_model=list[ExperimentResponse])
 def get_my_experiments(
     db: Session = Depends(get_db),
@@ -46,7 +45,7 @@ def get_my_experiments(
         Experiment.user_id == current_user.id
     ).all()
 
-# --------- update the experiment -------------------------------
+# ---------------------------------- update the experiment -------------------------------
 
 @router.put("/{experiment_id}", response_model=ExperimentResponse)
 def update_experiment(
@@ -73,7 +72,7 @@ def update_experiment(
     return experiment
 
 
-# ------------------- Delete the experiment ------------------------
+# ---------------------------------------- Delete the experiment ------------------------
 @router.delete("/{experiment_id}", status_code=204)
 def delete_experiment(
     experiment_id: int,
