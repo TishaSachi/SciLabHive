@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from database import engine
 from sqlalchemy import text
 from models import Base
-from routes import auth, users, experiments, experiment_parameters
+from routes import auth, users, experiments, experiment_parameters,experiment_results
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
@@ -15,6 +15,7 @@ app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(experiments.router)
 app.include_router(experiment_parameters.router)
+app.include_router(experiment_results.router)
 
 @app.get("/")
 def test_db():

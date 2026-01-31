@@ -64,6 +64,20 @@ class ExperimentParameterResponse(BaseModel):
 
 
        
+# --------------------------- EXPERIMENT RESULTS SCHEMAS ---------------------------
 
+class ExperimentResultCreate(BaseModel):
+    result_name: str
+    result_value: str | None
+
+
+class ExperimentResultResponse(BaseModel):
+    result_id: int
+    result_name: str
+    result_value: str | None
+    experiment_id: int
+
+    class Config:
+        from_attributes = True
 
 
