@@ -1,7 +1,14 @@
+#for backend
 venv/
+
+__pycache__/
+*.pyc
 
 # Environment variables
 .env
 
-__pycache__/
-*.pyc
+
+# for frontend
+node_modules/
+dist/
+
