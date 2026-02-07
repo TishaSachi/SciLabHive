@@ -1,8 +1,10 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
-import Experiments from "./pages/Experiments";
-import ExperimentDetail from "./pages/ExperimentDetail";
-import ProtectedRoute from "./routes/ProtectedRoute";
+
+function ProtectedRoute({ children }) {
+  const token = localStorage.getItem("token");
+  return token ? children : <Navigate to="/login" replace />;
+}
 
 function App() {
   return (
@@ -14,16 +16,7 @@ function App() {
           path="/"
           element={
             <ProtectedRoute>
-              <Experiments />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/experiments/:id"
-          element={
-            <ProtectedRoute>
-              <ExperimentDetail />
+              <h1>Dashboard (Protected)</h1>
             </ProtectedRoute>
           }
         />

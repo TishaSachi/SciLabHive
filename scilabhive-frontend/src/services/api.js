@@ -1,10 +1,12 @@
 import axios from "axios";
 
-const api = axios.create({
-  baseURL: "http://127.0.0.1:8000", // FastAPI URL
+const API_URL = import.meta.env.VITE_API_URL;
+
+export const api = axios.create({
+  baseURL: API_URL,
 });
 
-// Automatically attach token
+// Attach token automatically if exists
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -12,5 +14,3 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
-
-export default api;
