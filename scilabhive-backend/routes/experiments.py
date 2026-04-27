@@ -38,12 +38,14 @@ def create_experiment(
 
 @router.get("/", response_model=list[ExperimentResponse])
 def get_my_experiments(
+    skip: int = 0,
+    limit: int = 50,
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
     return db.query(Experiment).filter(
         Experiment.user_id == current_user.id
-    ).all()
+    ).offset(skip).limit(limit).all()
 
 # ---------------------------------- update the experiment -------------------------------
 

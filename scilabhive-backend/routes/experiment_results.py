@@ -89,7 +89,7 @@ def update_experiment_result(
     ).first()
 
     if not result:
-        raise HTTPException(status_code=404, detail="Parameter not found")
+        raise HTTPException(status_code=404, detail="Result not found")
 
     # Ownership check via experiment
     experiment = db.query(Experiment).filter(
@@ -122,7 +122,7 @@ def delete_experiment_result(
     ).first()
 
     if not result:
-        raise HTTPException(status_code=404, detail="Parameter not found")
+        raise HTTPException(status_code=404, detail="Result not found")
 
     # Ownership check
     experiment = db.query(Experiment).filter(
