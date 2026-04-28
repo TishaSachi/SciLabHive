@@ -12,3 +12,22 @@ export const login = async (email: string, password: string) => {
   return response.data;
 };
 
+export const register = async (
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+  institution: string,
+  user_role: string
+) => {
+  const response = await api.post("/auth/register", {
+    full_name: `${firstName} ${lastName}`,
+    email,
+    password,
+    institution,
+    user_role,
+  });
+
+  return response.data;
+};
+

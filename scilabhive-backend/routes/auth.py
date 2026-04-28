@@ -29,9 +29,12 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
         full_name=user.full_name,
         email=user.email,
         hashed_password=hash_password(user.password),
-        role="user"
+        role="user",
+        institution=user.institution,
+        user_role=user.user_role
     )
 
+    print("Saving user:", new_user.full_name, new_user.email, new_user.institution, new_user.user_role)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

@@ -26,6 +26,8 @@ class User(Base):
 
     role = Column(String(10), default="user")  # user / admin
     is_admin = Column(Boolean, default=False)
+    institution = Column(String(255), nullable=True)
+    user_role = Column(String(50), nullable=True) 
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
