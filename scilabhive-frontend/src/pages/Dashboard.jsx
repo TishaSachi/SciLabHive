@@ -2,8 +2,8 @@ import { useState } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import "./dashboard.css";
+import { DashboardPage } from "./Pages";
 
-// Placeholder page content
 function PageContent({ activePage }) {
   return (
     <div className="page-content">
@@ -18,10 +18,7 @@ export default function Dashboard({ user }) {
 
   return (
     <div className="dashboard-shell">
-      {/* Fixed left sidebar */}
       <Sidebar activePage={activePage} onNavigate={setActivePage} user={user} />
-
-      {/* Right side: topbar + scrollable content */}
       <div className="dashboard-main">
         <Topbar
           activePage={activePage}
@@ -29,7 +26,11 @@ export default function Dashboard({ user }) {
           user={user}
         />
         <main className="dashboard-content">
-          <PageContent activePage={activePage} />
+          {activePage === "dashboard" ? (
+            <DashboardPage onNavigate={setActivePage} />
+          ) : (
+            <PageContent activePage={activePage} />
+          )}
         </main>
       </div>
     </div>

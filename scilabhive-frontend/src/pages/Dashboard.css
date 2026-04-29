@@ -35,6 +35,7 @@
   --font-display: 'Fraunces', serif;
   --sidebar-width: 220px;
   --topbar-height: 60px;
+  
 }
 
 body {
@@ -42,7 +43,7 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 
 /* ── Shell Layout ── */
