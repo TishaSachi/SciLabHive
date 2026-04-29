@@ -1,0 +1,43 @@
+/* ── Global cursor override ─────────────────────────────── */
+/* Hides the default cursor everywhere on the site          */
+
+*,
+*::before,
+*::after {
+  cursor: none !important;
+}
+
+/* ── Cursor dot ─────────────────────────────────────────── */
+.g-cursor-dot {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #7c3aed;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);
+  mix-blend-mode: multiply;
+  transition: background 0.2s, transform 0.1s;
+}
+
+/* ── Cursor ring ─────────────────────────────────────────── */
+.g-cursor-ring {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(124, 58, 237, 0.4);
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+}
+
+
+.auth-page ~ .g-cursor-dot,
+.slh-page ~ .g-cursor-dot,
+.reg-page ~ .g-cursor-dot {
+  background: #0d9488;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.25);
+}

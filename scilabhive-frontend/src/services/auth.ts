@@ -31,3 +31,9 @@ export const register = async (
   return response.data;
 };
 
+
+export const logout = () => {
+  localStorage.removeItem("token");
+  window.location.href = "/login";
+};
+ 

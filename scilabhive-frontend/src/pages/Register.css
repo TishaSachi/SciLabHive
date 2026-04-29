@@ -32,7 +32,6 @@
 }
 
 body {
-  cursor: none;
   background: var(--bg);
   color: var(--text);
   font-family: var(--body);
@@ -40,30 +39,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Cursor ─────────────────────────────── */
-.reg-cursor-dot {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--violet);
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 0 3px var(--violet-glow);
-  mix-blend-mode: multiply;
-}
-
-.reg-cursor-ring {
-  position: fixed;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(124, 58, 237, 0.38);
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-}
 
 /* ── Canvas ─────────────────────────────── */
 .reg-sci-canvas {
