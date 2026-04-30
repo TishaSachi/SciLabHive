@@ -28,3 +28,48 @@ export function QuickCard({ icon, label, sub, onClick }) {
     </div>
   );
 }
+
+export function DisplayBar() {
+  const data = [
+    { label: "Mon", value: 3 },
+    { label: "Tue", value: 5 },
+    { label: "Wed", value: 2 },
+    { label: "Thu", value: 7 },
+    { label: "Fri", value: 5 },
+    { label: "Sat", value: 10 },
+    { label: "Sun", value: 12 },
+  ];
+
+  const max = Math.max(...data.map((d) => d.value));
+
+  return (
+    <div className="chart-bars">
+      {data.map((d) => (
+        <div key={d.label} className="bar-col">
+          <div
+            className="bar"
+            style={{ height: `${(d.value / max) * 80}px` }}
+          />
+          <span className="bar-label">{d.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function ExperimentChart() {
+  return (
+    <div className="ex-chart">
+      <h3>Experiment this week</h3>
+      <div>
+        <div>
+          <DisplayBar />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ShowRecentActivity() {
+  return <div> Recent Activity</div>;
+}

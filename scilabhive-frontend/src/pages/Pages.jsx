@@ -1,4 +1,4 @@
-import { StatCard, QuickCard } from "./DashboardUI";
+import { StatCard, QuickCard, ExperimentChart } from "./DashboardUI";
 
 export function DashboardPage({ onNavigate }) {
   return (
@@ -32,7 +32,6 @@ export function DashboardPage({ onNavigate }) {
           accentColor="#e11d48"
         />
       </div>
-
       {/* ── Section 2: Quick Actions ── */}
       <div className="quick-grid">
         <QuickCard
@@ -89,6 +88,10 @@ export function DashboardPage({ onNavigate }) {
             </svg>
           }
         />
+      </div>
+      {/* section 3 - experiment chart and recent activities */}
+      <div className="sec-3">
+        <ExperimentChart />
       </div>
     </div>
   );
