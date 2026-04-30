@@ -102,6 +102,7 @@
 
 .sec-3{
   display: flex;
+  justify-content: space-between;
 }
 .ex-chart{
   background-color: rgb(255, 255, 255);
@@ -109,7 +110,7 @@
   border: 1.5px solid var(--border);
   border-radius: var(--radius);
 }
-.ex-chart h3{
+.card-title{
   margin: 10px;
   
 }
@@ -142,4 +143,44 @@
 .bar-label {
   font-size: 10px;
   color: var(--text-light);
+}
+
+.activity-chart{
+  background-color: rgb(255, 255, 255);
+  padding: 15px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+}
+
+
+.activity-area{
+  display: flex;
+  justify-content: left;
+  border-bottom: 1.5px solid var(--border);
+
+}
+
+.dot {
+  display: flex;
+  align-self: center;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;  
+  
+}
+
+.activity-text{
+  margin: 20px;
+}
+
+.act-bold{
+  font-weight: bold;
+}
+.act-time {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 2px;
+  display: block;
 }

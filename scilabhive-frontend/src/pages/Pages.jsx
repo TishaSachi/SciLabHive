@@ -1,4 +1,9 @@
-import { StatCard, QuickCard, ExperimentChart } from "./DashboardUI";
+import {
+  StatCard,
+  QuickCard,
+  ExperimentChart,
+  ShowRecentActivity,
+} from "./DashboardUI";
 
 export function DashboardPage({ onNavigate }) {
   return (
@@ -92,6 +97,7 @@ export function DashboardPage({ onNavigate }) {
       {/* section 3 - experiment chart and recent activities */}
       <div className="sec-3">
         <ExperimentChart />
+        <ShowRecentActivity />
       </div>
     </div>
   );
