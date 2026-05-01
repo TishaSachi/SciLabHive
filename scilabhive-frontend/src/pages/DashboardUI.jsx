@@ -125,3 +125,86 @@ export function ShowRecentActivity() {
     </div>
   );
 }
+
+export function DisplayRecentExperimentCard() {
+  const recentExperiments = [
+    {
+      title: "Enzyme Kinetics #3",
+      type: "Biochemestry",
+      status: "In progress",
+      date: "Apr 28, 2026",
+      color: "#DCE866",
+    },
+    {
+      title: "pH Titration study",
+      type: "Chemestry",
+      status: "Completed",
+      date: "Apr 25, 2026",
+      color: "#64E310",
+    },
+    {
+      title: "Spectroscopy Analysis",
+      type: "Physics",
+      status: "Review",
+      date: "Apr 22, 2026",
+      color: "#E31010",
+    },
+    {
+      title: "Cell Culture Growth",
+      type: "Biology",
+      status: "Planned",
+      date: "Apr 22, 2026",
+      color: "#B210E3",
+    },
+  ];
+
+  const statusClass = {
+    // ✅ object
+    "In progress": "badge-warning",
+    Completed: "badge-success",
+    Review: "badge-danger",
+    Planned: "badge-info",
+  };
+
+  return (
+    <div className="ex-table">
+      <div className="table-titles">
+        <div>Title</div>
+        <div>Type</div>
+        <div>Status</div>
+        <div>Date</div>
+      </div>
+      {recentExperiments.map((r) => (
+        <div key={r.title} className="re-ex-elements">
+          <div>{r.title}</div>
+          <div>{r.type}</div>
+          <div>
+            <p className={`status-badge ${statusClass[r.status]}`}>
+              {r.status}
+            </p>
+          </div>
+          <div>{r.date}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function ShowRecentExperiments({ onNavigate }) {
+  return (
+    <div>
+      <div className="recent-ex">
+        <p className="recent-ex-title">Recent Experiment</p>
+        <button
+          className="recent-ex-btn"
+          onClick={() => onNavigate("experiments")}
+        >
+          Show all
+        </button>
+      </div>
+      <div className="re-ex-cards">
+        <DisplayRecentExperimentCard />
+      </div>
+    </div>
+  );
+}

@@ -3,6 +3,7 @@ import {
   QuickCard,
   ExperimentChart,
   ShowRecentActivity,
+  ShowRecentExperiments,
 } from "./DashboardUI";
 
 export function DashboardPage({ onNavigate }) {
@@ -98,6 +99,9 @@ export function DashboardPage({ onNavigate }) {
       <div className="sec-3">
         <ExperimentChart />
         <ShowRecentActivity />
+      </div>
+      <div className="sec-4">
+        <ShowRecentExperiments />
       </div>
     </div>
   );
