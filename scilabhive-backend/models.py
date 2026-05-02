@@ -56,6 +56,7 @@ class Experiment(Base):
     title = Column(String(100), nullable=False)
     experiment_type = Column(String(50), nullable=False)
     description = Column(Text)
+    status = Column(String(20), default="Planned")
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
@@ -89,6 +90,7 @@ class ExperimentParameter(Base):
 
     param_name = Column(String(50), nullable=False)
     param_value = Column(Text)
+    result_unit = Column(String(20), nullable=True)
 
     # Relationship
     experiment = relationship("Experiment", back_populates="parameters")

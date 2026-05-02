@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
+from datetime import datetime
 
 class UserCreate(BaseModel):
     full_name: str
@@ -38,6 +39,7 @@ class ExperimentCreate(BaseModel):
     title: str
     experiment_type: str
     description: str | None = None
+    status: str = "Planned"
 
 
 class ExperimentResponse(BaseModel):
@@ -46,6 +48,8 @@ class ExperimentResponse(BaseModel):
     experiment_type: str
     description: str | None
     user_id: int
+    status: str
+    created_at: datetime
 
     class Config:
         from_attributes = True
@@ -74,6 +78,7 @@ class ExperimentParameterResponse(BaseModel):
 class ExperimentResultCreate(BaseModel):
     result_name: str
     result_value: str | None
+    result_unit: str | None = None
 
 
 class ExperimentResultResponse(BaseModel):
@@ -81,6 +86,7 @@ class ExperimentResultResponse(BaseModel):
     result_name: str
     result_value: str | None
     experiment_id: int
+    result_unit: str | None = None
 
     class Config:
         from_attributes = True
