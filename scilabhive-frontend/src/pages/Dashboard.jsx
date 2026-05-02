@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import "./dashboard.css";
 import { DashboardPage } from "./Pages";
+import ExperimentsPage from "./ExperimentsPage"; // ← add this
 
 function PageContent({ activePage }) {
   return (
@@ -16,6 +17,18 @@ function PageContent({ activePage }) {
 export default function Dashboard({ user }) {
   const [activePage, setActivePage] = useState("dashboard");
 
+  const renderPage = () => {
+    // ← add this function
+    switch (activePage) {
+      case "dashboard":
+        return <DashboardPage onNavigate={setActivePage} />;
+      case "experiments":
+        return <ExperimentsPage />;
+      default:
+        return <PageContent activePage={activePage} />;
+    }
+  };
+
   return (
     <div className="dashboard-shell">
       <Sidebar activePage={activePage} onNavigate={setActivePage} user={user} />
@@ -26,11 +39,7 @@ export default function Dashboard({ user }) {
           user={user}
         />
         <main className="dashboard-content">
-          {activePage === "dashboard" ? (
-            <DashboardPage onNavigate={setActivePage} />
-          ) : (
-            <PageContent activePage={activePage} />
-          )}
+          {renderPage()} {/* ← replace the ternary with this */}
         </main>
       </div>
     </div>
