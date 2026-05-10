@@ -40,7 +40,9 @@ def create_experiment_result(
     new_result = ExperimentResult(
         result_name=result.result_name,
         result_value=result.result_value,
+        result_unit=result.result_unit,
         experiment_id=experiment_id
+        
     )
 
     db.add(new_result)
@@ -103,6 +105,7 @@ def update_experiment_result(
     # Update fields
     result.result_name = result_data.result_name
     result.result_value = result_data.result_value
+    result.result_unit = result_data.result_unit 
 
     db.commit()
     db.refresh(result)

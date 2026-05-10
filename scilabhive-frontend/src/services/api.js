@@ -14,3 +14,18 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+export const getExperiments = async () => {
+  const response = await api.get('/experiments/');
+  return response.data;
+};
+
+export const createExperiment = async (data) => {
+  const response = await api.post('/experiments/', {
+    title: data.title,
+    experiment_type: data.type,
+    description: data.description,
+    status: data.status,
+  });
+  return response.data;
+};

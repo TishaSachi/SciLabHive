@@ -24,6 +24,7 @@ def create_experiment(
         title=experiment.title,
         experiment_type=experiment.experiment_type,
         description=experiment.description,
+        status=experiment.status,
         user_id=current_user.id
     )
 
@@ -67,6 +68,7 @@ def update_experiment(
     experiment.title = updated_data.title
     experiment.experiment_type = updated_data.experiment_type
     experiment.description = updated_data.description
+    experiment.status = updated_data.status
 
     db.commit()
     db.refresh(experiment)
