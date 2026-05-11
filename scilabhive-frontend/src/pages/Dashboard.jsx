@@ -3,7 +3,8 @@ import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import "./dashboard.css";
 import { DashboardPage } from "./Pages";
-import ExperimentsPage from "./ExperimentsPage"; // ← add this
+import ExperimentsPage from "./ExperimentsPage";
+import AIInsightsPage from "./AIInsightsPage";
 
 function PageContent({ activePage }) {
   return (
@@ -18,12 +19,13 @@ export default function Dashboard({ user }) {
   const [activePage, setActivePage] = useState("dashboard");
 
   const renderPage = () => {
-    // ← add this function
     switch (activePage) {
       case "dashboard":
         return <DashboardPage onNavigate={setActivePage} />;
       case "experiments":
         return <ExperimentsPage />;
+      case "ai":
+        return <AIInsightsPage user={user} />;
       default:
         return <PageContent activePage={activePage} />;
     }
