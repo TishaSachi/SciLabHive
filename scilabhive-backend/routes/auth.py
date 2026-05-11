@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from database import get_db
 from models import User
 from schemas import UserCreate, UserResponse, Token
-from security import hash_password, verify_password, create_access_token
+from security import get_current_user, hash_password, verify_password, create_access_token
 
 
 router = APIRouter(
@@ -13,6 +13,9 @@ router = APIRouter(
     tags=["Authentication"]
 )
 
+@router.get("/me", response_model=UserResponse)
+def get_me(current_user = Depends(get_current_user)):
+    return current_user
 
 @router.post("/register", response_model=UserResponse, status_code=201)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):

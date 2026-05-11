@@ -4,7 +4,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
+import { useState } from "react";
 import "./global.css";
+import { getMe } from "./services/api";
 
 // ── Global Cursor Dot ─────────────────────────────────────
 function CursorDot() {
@@ -51,23 +53,44 @@ function CursorDot() {
 
 // ── App ───────────────────────────────────────────────────
 function App() {
+  const [user, setUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setLoadingUser(false);
+      return;
+    }
+    getMe()
+      .then((data) => setUser(data))
+      .catch(() => {
+        localStorage.removeItem("token");
+      })
+      .finally(() => setLoadingUser(false));
+  }, []);
+
+  if (loadingUser)
+    return (
+      <div style={{ padding: 40, textAlign: "center", color: "#6d6a8a" }}>
+        Loading…
+      </div>
+    );
+
   return (
     <BrowserRouter>
       <CursorDot />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-
         <Route
           path="/"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <Dashboard user={user} />
             </ProtectedRoute>
           }
         />
-
-        {/* Catch-all */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
