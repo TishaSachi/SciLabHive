@@ -103,12 +103,15 @@
 .sec-3{
   display: flex;
   justify-content: space-between;
+  gap: 20px;          
+  margin-bottom: 28px;
 }
 .ex-chart{
   background-color: rgb(255, 255, 255);
   padding: 15px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius);
+  flex: 1;
 }
 .card-title{
   margin: 10px;
@@ -117,9 +120,10 @@
 
 .chart-bars {
   display: flex;
-  align-items: flex-end;  /* bars grow upward from bottom */
+  align-items: flex-end;  
   gap: 6px;
-  height: 150px;           /* matches the 80 in your JS */
+  height: 150px;      
+  width: 100%;     
 }
 
 .bar-col {
@@ -150,6 +154,7 @@
   padding: 15px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius);
+  flex: 1;
 }
 
 
