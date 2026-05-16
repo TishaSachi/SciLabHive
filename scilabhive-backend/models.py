@@ -112,8 +112,10 @@ class ExperimentResult(Base):
 
     result_name = Column(String(100), nullable=False)
     result_value = Column(Text)
+    result_unit = Column(String(20), nullable=True)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # Relationship
     experiment = relationship("Experiment", back_populates="results")
+

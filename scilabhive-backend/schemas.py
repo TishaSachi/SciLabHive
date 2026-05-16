@@ -85,8 +85,9 @@ class ExperimentResultResponse(BaseModel):
     result_id: int
     result_name: str
     result_value: str | None
-    experiment_id: int
     result_unit: str | None = None
+    experiment_id: int
+    created_at: datetime        
 
     class Config:
         from_attributes = True
