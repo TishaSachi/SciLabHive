@@ -34,3 +34,25 @@ export const getMe = async () => {
   const response = await api.get('/auth/me');
   return response.data;
 };
+
+
+// Get all results for one experiment
+export const getResults = async (experimentId) => {
+  const response = await api.get(`/experiment_results/${experimentId}/results`);
+  return response.data;
+};
+
+// Add a result to an experiment
+export const addResult = async (experimentId, data) => {
+  const response = await api.post(`/experiment_results/${experimentId}/results`, {
+    result_name:  data.result_name,
+    result_value: data.result_value,
+    result_unit:  data.result_unit,
+  });
+  return response.data;
+};
+
+// Delete a result
+export const deleteResult = async (resultId) => {
+  await api.delete(`/experiment_results/${resultId}`);
+};

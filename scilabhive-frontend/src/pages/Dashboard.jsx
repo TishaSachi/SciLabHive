@@ -5,6 +5,7 @@ import "./dashboard.css";
 import { DashboardPage } from "./Pages";
 import ExperimentsPage from "./ExperimentsPage";
 import AIInsightsPage from "./AIInsightsPage";
+import ResultsPage from "./ResultsPage";
 
 function PageContent({ activePage }) {
   return (
@@ -26,6 +27,8 @@ export default function Dashboard({ user }) {
         return <ExperimentsPage />;
       case "ai":
         return <AIInsightsPage user={user} />;
+      case "results":
+        return <ResultsPage />;
       default:
         return <PageContent activePage={activePage} />;
     }
