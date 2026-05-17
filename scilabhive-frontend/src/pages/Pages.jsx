@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { getExperiments } from "../services/api";
 import {
   StatCard,
   QuickCard,
@@ -7,37 +9,58 @@ import {
 } from "./DashboardUI";
 
 export function DashboardPage({ onNavigate }) {
+  const [experiments, setExperiments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getExperiments()
+      .then((data) => setExperiments(data))
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  // Derive stats from real data
+  const total = experiments.length;
+  const completed = experiments.filter((e) => e.status === "Completed").length;
+  const inProgress = experiments.filter(
+    (e) => e.status === "In Progress",
+  ).length;
+  const review = experiments.filter((e) => e.status === "Review").length;
+
+  // Most recent 4 sorted by date
+  const recent = [...experiments]
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(0, 4);
+
   return (
     <div>
       {/* ── Section 1: Stat Cards ── */}
       <div className="stat-grid">
         <StatCard
           label="Total Experiments"
-          value="47"
-          sub="12% this month"
-          upDown="up"
+          value={loading ? "—" : total}
+          sub="experiments logged"
         />
         <StatCard
           label="Completed"
-          value="31"
-          sub="8% vs last month"
-          upDown="up"
+          value={loading ? "—" : completed}
+          sub="fully done"
           accentColor="#0d9488"
         />
         <StatCard
           label="In Progress"
-          value="11"
-          sub="3 due this week"
+          value={loading ? "—" : inProgress}
+          sub="currently active"
           accentColor="#d97706"
         />
         <StatCard
-          label="Collaborators"
-          value="8"
-          sub="+2 new this week"
-          upDown="up"
+          label="Under Review"
+          value={loading ? "—" : review}
+          sub="needs attention"
           accentColor="#e11d48"
         />
       </div>
+
       {/* ── Section 2: Quick Actions ── */}
       <div className="quick-grid">
         <QuickCard
@@ -95,13 +118,16 @@ export function DashboardPage({ onNavigate }) {
           }
         />
       </div>
-      {/* section 3 - experiment chart and recent activities */}
+
+      {/* ── Section 3: Chart + Activity ── */}
       <div className="sec-3">
-        <ExperimentChart />
-        <ShowRecentActivity />
+        <ExperimentChart experiments={experiments} />
+        <ShowRecentActivity experiments={experiments} />
       </div>
+
+      {/* ── Section 4: Recent experiments ── */}
       <div className="sec-4">
-        <ShowRecentExperiments />
+        <ShowRecentExperiments onNavigate={onNavigate} experiments={recent} />
       </div>
     </div>
   );
