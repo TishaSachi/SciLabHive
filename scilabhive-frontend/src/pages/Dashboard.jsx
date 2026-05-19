@@ -6,6 +6,7 @@ import { DashboardPage } from "./Pages";
 import ExperimentsPage from "./ExperimentsPage";
 import AIInsightsPage from "./AIInsightsPage";
 import ResultsPage from "./ResultsPage";
+import ProfilePage from "./ProfilePage";
 
 function PageContent({ activePage }) {
   return (
@@ -29,6 +30,13 @@ export default function Dashboard({ user }) {
         return <AIInsightsPage user={user} />;
       case "results":
         return <ResultsPage />;
+      case "profile":
+        return (
+          <ProfilePage
+            user={user}
+            onUserUpdate={(updated) => setUser(updated)}
+          />
+        );
       default:
         return <PageContent activePage={activePage} />;
     }
@@ -43,9 +51,7 @@ export default function Dashboard({ user }) {
           onNavigate={setActivePage}
           user={user}
         />
-        <main className="dashboard-content">
-          {renderPage()} {/* ← replace the ternary with this */}
-        </main>
+        <main className="dashboard-content">{renderPage()}</main>
       </div>
     </div>
   );

@@ -56,3 +56,33 @@ export const addResult = async (experimentId, data) => {
 export const deleteResult = async (resultId) => {
   await api.delete(`/experiment_results/${resultId}`);
 };
+
+
+// Update profile info (name, institution, user_role)
+export const updateProfile = async (data) => {
+  const response = await api.put('/auth/me', {
+    full_name:   data.full_name,
+    institution: data.institution,
+    user_role:   data.user_role,
+  });
+  return response.data;
+};
+ 
+// Change password
+export const changePassword = async (data) => {
+  const response = await api.put('/auth/change-password', {
+    current_password: data.current_password,
+    new_password:     data.new_password,
+  });
+  return response.data;
+};
+ 
+// Upload avatar image
+export const uploadAvatar = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  const response = await api.post('/auth/upload-avatar', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return response.data;
+};

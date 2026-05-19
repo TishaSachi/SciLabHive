@@ -93,3 +93,18 @@ class ExperimentResultResponse(BaseModel):
         from_attributes = True
 
 
+# --------------------------- User profile shemas ---------------------------------
+
+class UserUpdate(BaseModel):
+    full_name: str
+    institution: Optional[str] = None
+    user_role: Optional[str] = None
+
+class ChangePassword(BaseModel):
+    current_password: str
+    new_password: str = Field(min_length=8, max_length=64)
+    
+class AvatarResponse(BaseModel):
+    avatar_url: str
+
+
