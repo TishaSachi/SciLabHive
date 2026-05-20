@@ -92,7 +92,11 @@ export default function Topbar({ activePage, onNavigate, user }) {
           className={`avatar ${dropdownOpen ? "open" : ""}`}
           onClick={() => setDropdownOpen((o) => !o)}
         >
-          {initials}
+          {user?.avatar_url ? (
+            <img src={user.avatar_url} alt="profile-pic" className="avatar" />
+          ) : (
+            initials
+          )}
         </div>
 
         {dropdownOpen && (

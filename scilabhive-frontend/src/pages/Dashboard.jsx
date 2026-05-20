@@ -17,8 +17,9 @@ function PageContent({ activePage }) {
   );
 }
 
-export default function Dashboard({ user }) {
+export default function Dashboard({ user: initialUser }) {
   const [activePage, setActivePage] = useState("dashboard");
+  const [user, setUser] = useState(initialUser);
 
   const renderPage = () => {
     switch (activePage) {

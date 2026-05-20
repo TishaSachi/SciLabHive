@@ -6,7 +6,7 @@ import shutil, os, uuid
 
 from database import get_db
 from models import User
-from schemas import UserCreate, UserResponse, Token, UserUpdate, ChangePassword, AvatarResponse
+from schemas import UserCreate, UserResponse, Token, UserUpdate, ChangePassword, AvatarResponse, AvatarUpdate
 from security import get_current_user, hash_password, verify_password, create_access_token
 
 
@@ -107,33 +107,20 @@ def change_password(
 
 
 # ── UPLOAD AVATAR ──
-UPLOAD_DIR = "static/avatars"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-@router.post("/upload-avatar", response_model=AvatarResponse)
-async def upload_avatar(
-    file: UploadFile = File(...),
+@router.put("/upload-avatar", response_model=UserResponse)
+def upload_avatar(
+    data: AvatarUpdate,
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
-    # Validate file type
-    if not file.content_type.startswith("image/"):
-        raise HTTPException(status_code=400, detail="File must be an image")
+    # Validate it's actually a base64 image
+    if not data.avatar_base64.startswith('data:image/'):
+        raise HTTPException(status_code=400, detail="Invalid image format")
 
-    # Generate unique filename
-    ext = file.filename.split(".")[-1]
-    filename = f"{uuid.uuid4()}.{ext}"
-    filepath = os.path.join(UPLOAD_DIR, filename)
-
-    # Save file to disk
-    with open(filepath, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
-    # Save URL to database
-    avatar_url = f"/static/avatars/{filename}"
-    current_user.avatar_url = avatar_url
+    current_user.avatar_url = data.avatar_base64
     db.commit()
-
-    return {"avatar_url": avatar_url}
+    db.refresh(current_user)
+    return current_user
 
 

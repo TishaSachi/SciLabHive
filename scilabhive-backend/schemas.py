@@ -13,10 +13,11 @@ class UserCreate(BaseModel):
 class UserResponse(BaseModel):
     id: int
     full_name: str
-    email: EmailStr
-    role: str
-    institution: Optional[str] = None  
-    user_role: Optional[str] = None
+    email: str
+    institution: str | None = None
+    user_role: str | None = None
+    avatar_url: str | None = None
+    created_at: datetime
 
     class Config:
         from_attributes = True
@@ -108,3 +109,6 @@ class AvatarResponse(BaseModel):
     avatar_url: str
 
 
+# In schemas.py add:
+class AvatarUpdate(BaseModel):
+    avatar_base64: str

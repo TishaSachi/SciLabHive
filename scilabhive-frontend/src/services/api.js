@@ -79,10 +79,16 @@ export const changePassword = async (data) => {
  
 // Upload avatar image
 export const uploadAvatar = async (file) => {
-  const formData = new FormData();
-  formData.append('file', file);
-  const response = await api.post('/auth/upload-avatar', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
+  // Convert file to base64 on the frontend
+  const base64 = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload  = () => resolve(reader.result); // gives "data:image/jpeg;base64,..."
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+  const response = await api.put('/auth/upload-avatar', {
+    avatar_base64: base64,
   });
   return response.data;
 };
