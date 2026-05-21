@@ -1,14 +1,23 @@
-#for backend
-venv/
-
+# Python
 __pycache__/
 *.pyc
-
-# Environment variables
+*.pyo
+venv/
 .env
+*.egg-info/
 
-
-# for frontend
+# Node
 node_modules/
 dist/
+.next/
 
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.sqlite3
