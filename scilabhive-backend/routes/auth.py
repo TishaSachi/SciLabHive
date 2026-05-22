@@ -124,3 +124,13 @@ def upload_avatar(
     return current_user
 
 
+@router.delete("/me", status_code=204)
+def delete_account(
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    db.delete(current_user)
+    db.commit()
+    return
+
+

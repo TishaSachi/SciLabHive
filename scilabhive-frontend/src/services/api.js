@@ -58,6 +58,8 @@ export const deleteResult = async (resultId) => {
 };
 
 
+
+
 // Update profile info (name, institution, user_role)
 export const updateProfile = async (data) => {
   const response = await api.put('/auth/me', {
@@ -91,4 +93,8 @@ export const uploadAvatar = async (file) => {
     avatar_base64: base64,
   });
   return response.data;
+};
+
+export const deleteAccount = async () => {
+  await api.delete('/auth/me');
 };

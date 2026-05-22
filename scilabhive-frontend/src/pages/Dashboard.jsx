@@ -7,6 +7,7 @@ import ExperimentsPage from "./ExperimentsPage";
 import AIInsightsPage from "./AIInsightsPage";
 import ResultsPage from "./ResultsPage";
 import ProfilePage from "./ProfilePage";
+import SettingsPage from "./SettingsPage";
 
 function PageContent({ activePage }) {
   return (
@@ -38,6 +39,8 @@ export default function Dashboard({ user: initialUser }) {
             onUserUpdate={(updated) => setUser(updated)}
           />
         );
+      case "settings":
+        return <SettingsPage />;
       default:
         return <PageContent activePage={activePage} />;
     }
