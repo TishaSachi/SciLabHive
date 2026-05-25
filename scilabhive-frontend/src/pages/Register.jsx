@@ -312,8 +312,11 @@ export default function RegisterPage() {
         institution: form.institution,
         user_role: form.user_role,
       });
-      setSuccess(true);
-      setTimeout(() => navigate("/login"), 2200);
+
+      // Redirect to OTP verification page
+      navigate("/verify-otp", {
+        state: { email: form.email },
+      });
     } catch (err) {
       setError("Registration failed. This email may already be in use.");
     } finally {

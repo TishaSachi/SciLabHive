@@ -30,6 +30,10 @@ class User(Base):
     user_role = Column(String(50), nullable=True) 
     avatar_url = Column(Text, nullable=True)
 
+    is_verified    = Column(Boolean, default=False)
+    otp_code       = Column(String(6),  nullable=True)
+    otp_expires_at = Column(DateTime(timezone=True), nullable=True)
+
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships

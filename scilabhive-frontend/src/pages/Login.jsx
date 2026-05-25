@@ -224,7 +224,12 @@ export default function LoginPage() {
       saveToken(data.access_token);
       navigate("/");
     } catch (err) {
-      setError("Invalid email or password. Please try again.");
+      // If email not verified redirect to OTP page
+      if (err?.response?.data?.detail === "EMAIL_NOT_VERIFIED") {
+        navigate("/verify-otp", { state: { email } });
+      } else {
+        setError("Invalid email or password");
+      }
     } finally {
       setLoading(false);
     }

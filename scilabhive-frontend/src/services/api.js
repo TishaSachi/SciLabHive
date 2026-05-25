@@ -98,3 +98,16 @@ export const uploadAvatar = async (file) => {
 export const deleteAccount = async () => {
   await api.delete('/auth/me');
 };
+
+export const verifyOTP = async (email, otp) => {
+  const response = await api.post('/auth/verify-otp', {
+    email,
+    otp,
+  });
+  return response.data;
+};
+
+export const resendOTP = async (email) => {
+  const response = await api.post('/auth/resend-otp', { email });
+  return response.data;
+};

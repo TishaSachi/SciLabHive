@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import { useState } from "react";
 import "./global.css";
 import { getMe } from "./services/api";
+import VerifyOTP from "./pages/VerifyOTP";
 
 // ── Global Cursor Dot ─────────────────────────────────────
 function CursorDot() {
@@ -92,6 +93,8 @@ function App() {
           }
         />
         <Route path="*" element={<Navigate to="/login" replace />} />
+
+        <Route path="/verify-otp" element={<VerifyOTP />} />
       </Routes>
     </BrowserRouter>
   );
