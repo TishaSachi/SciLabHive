@@ -328,6 +328,10 @@ export default function RegisterPage() {
     window.location.href = `${import.meta.env.VITE_API_URL || ""}/auth/google`;
   };
 
+  const handleGithubLogin = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL || ""}/auth/github`;
+  };
+
   if (success) {
     return (
       <div className="reg-success-screen">
@@ -459,7 +463,11 @@ export default function RegisterPage() {
               </svg>
               Continue with Google
             </button>
-            <button className="reg-btn-oauth" type="button">
+            <button
+              className="reg-btn-oauth"
+              type="button"
+              onClick={handleGithubLogin}
+            >
               <svg
                 width="16"
                 height="16"

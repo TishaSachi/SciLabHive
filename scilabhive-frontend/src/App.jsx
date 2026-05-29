@@ -8,6 +8,7 @@ import { useState } from "react";
 import "./global.css";
 import { getMe } from "./services/api";
 import VerifyOTP from "./pages/VerifyOTP";
+import OAuthCallback from "./pages/OAuthCallback";
 
 // ── Global Cursor Dot ─────────────────────────────────────
 function CursorDot() {
@@ -95,6 +96,7 @@ function App() {
         <Route path="*" element={<Navigate to="/login" replace />} />
 
         <Route path="/verify-otp" element={<VerifyOTP />} />
+        <Route path="/oauth-callback" element={<OAuthCallback />} />
       </Routes>
     </BrowserRouter>
   );

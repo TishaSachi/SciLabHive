@@ -4,8 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from database import engine
 from sqlalchemy import text
 from models import Base
-from routes import auth, users, experiments, experiment_parameters,experiment_results
-
+from routes import auth, users, experiments, experiment_parameters,experiment_results, oauth
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
@@ -22,6 +21,7 @@ app.add_middleware(
 
 Base.metadata.create_all(bind=engine)
 app.include_router(auth.router)
+app.include_router(oauth.router)
 app.include_router(users.router)
 app.include_router(experiments.router)
 app.include_router(experiment_parameters.router)

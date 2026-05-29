@@ -239,6 +239,10 @@ export default function LoginPage() {
     window.location.href = `${import.meta.env.VITE_API_URL || ""}/auth/google`;
   };
 
+  const handleGithubLogin = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL || ""}/auth/github`;
+  };
+
   return (
     <div className="slh-page">
       <CursorDot />
@@ -401,7 +405,11 @@ export default function LoginPage() {
               </svg>
               Google
             </button>
-            <button className="slh-btn-oauth" type="button">
+            <button
+              className="slh-btn-oauth"
+              type="button"
+              onClick={handleGithubLogin}
+            >
               <svg
                 width="16"
                 height="16"
