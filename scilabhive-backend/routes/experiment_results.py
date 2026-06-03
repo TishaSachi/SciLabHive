@@ -140,3 +140,21 @@ def delete_experiment_result(
     db.commit()
 
     return
+
+@router.get("/stats", response_model=dict)
+def get_results_stats(
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    # Get all experiment IDs for this user
+    experiment_ids = [
+        e.experiment_id for e in 
+        db.query(Experiment).filter(Experiment.user_id == current_user.id).all()
+    ]
+    
+    # Count total results
+    total_results = db.query(ExperimentResult).filter(
+        ExperimentResult.experiment_id.in_(experiment_ids)
+    ).count()
+
+    return {"total_results": total_results}

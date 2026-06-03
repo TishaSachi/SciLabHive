@@ -8,6 +8,7 @@ import AIInsightsPage from "./AIInsightsPage";
 import ResultsPage from "./ResultsPage";
 import ProfilePage from "./ProfilePage";
 import SettingsPage from "./SettingsPage";
+import AnalyticsPage from "./AnalyticsPage";
 
 function PageContent({ activePage }) {
   return (
@@ -41,6 +42,9 @@ export default function Dashboard({ user: initialUser }) {
         );
       case "settings":
         return <SettingsPage />;
+
+      case "analytics":
+        return <AnalyticsPage />;
       default:
         return <PageContent activePage={activePage} />;
     }

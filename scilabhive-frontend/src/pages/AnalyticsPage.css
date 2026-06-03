@@ -1,0 +1,365 @@
+@import './dashboard.css';
+
+/* ── Page header ── */
+.analytics-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.analytics-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+
+/* ── Stat cards ── */
+.analytics-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.analytics-stat-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.analytics-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--sc, var(--accent));
+}
+
+.analytics-stat-lbl {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 6px;
+}
+
+.analytics-stat-val {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.analytics-stat-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ── Grid layouts ── */
+.analytics-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.analytics-three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* ── Card ── */
+.analytics-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.analytics-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.analytics-card-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+/* ── Bar chart ── */
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 120px;
+  margin-top: 8px;
+}
+
+.bar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+}
+
+.bar-fill {
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+  background: var(--accent-dim);
+  min-height: 4px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.bar-fill:hover {
+  background: var(--accent);
+}
+
+.bar-lbl {
+  font-size: 10px;
+  color: var(--text-light);
+}
+
+.bar-val {
+  font-size: 10px;
+  color: var(--text-muted);
+  min-height: 14px;
+}
+
+/* ── Donut chart ── */
+.donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-val {
+  margin-left: auto;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+
+/* ── Horizontal bars ── */
+.h-bar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.h-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.h-bar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.h-bar-label {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.h-bar-count {
+  color: var(--text-muted);
+}
+
+.h-bar-track {
+  height: 8px;
+  background: var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.h-bar-fill {
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.6s ease;
+}
+
+/* ── Timeline ── */
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.tl-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.tl-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.tl-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.tl-line {
+  width: 1.5px;
+  background: var(--border);
+  flex: 1;
+  min-height: 20px;
+}
+
+.tl-item:last-child .tl-line {
+  display: none;
+}
+
+.tl-content {
+  padding-bottom: 16px;
+  flex: 1;
+}
+
+.tl-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tl-meta {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+/* ── Status badges ── */
+.a-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.a-badge.success { background: var(--success-bg); color: var(--success); }
+.a-badge.warning { background: var(--warning-bg); color: var(--warning); }
+.a-badge.danger  { background: var(--danger-bg);  color: var(--danger);  }
+.a-badge.info    { background: var(--accent-dim); color: var(--accent);  }
+
+/* ── Sparkline ── */
+.sparkline {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 44px;
+  margin-top: 8px;
+}
+
+.spark-bar {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  background: var(--accent-dim);
+  min-height: 3px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.spark-bar:hover {
+  background: var(--accent);
+}
+
+/* ── Most active day ── */
+.active-day-val {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent);
+  text-align: center;
+  margin-top: 16px;
+}
+
+.active-day-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ── Empty state ── */
+.analytics-empty {
+  padding: 32px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13.5px;
+}
+
+.analytics-empty-icon {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+/* ── Loading skeleton ── */
+.skeleton {
+  height: 14px;
+  background: linear-gradient(90deg, var(--border) 25%, var(--accent-dim) 50%, var(--border) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .analytics-stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .analytics-two-col   { grid-template-columns: 1fr; }
+  .analytics-three-col { grid-template-columns: 1fr; }
+}

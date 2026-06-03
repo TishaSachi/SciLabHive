@@ -111,3 +111,8 @@ export const resendOTP = async (email) => {
   const response = await api.post('/auth/resend-otp', { email });
   return response.data;
 };
+
+export const getResultsStats = async () => {
+  const response = await api.get('/experiment_results/stats');
+  return response.data;
+};
