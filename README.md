@@ -9,6 +9,7 @@ SciLabHive is a full-stack scientific experiment management platform designed to
 ### Backend ✅
 - User registration & login with **email OTP verification**
 - JWT-based authentication (OAuth2 Password Flow)
+- **Google & GitHub OAuth** social login
 - Secure password hashing with bcrypt
 - Role-based access control
 - PostgreSQL database with SQLAlchemy ORM
@@ -21,9 +22,11 @@ SciLabHive is a full-stack scientific experiment management platform designed to
 
 ### Frontend ✅
 - Login & Register pages with OTP verification flow
+- **Google & GitHub social login**
 - Dashboard with real-time stats and weekly activity chart
 - Experiments page with search, filter, and create modal
 - Results page — expandable per-experiment result logging
+- **Analytics page** — charts, status breakdown, monthly activity, experiment type distribution
 - AI Insights page — conversational experiment analysis
 - Profile page with avatar upload
 - Settings page with notification preferences and account management
@@ -37,6 +40,7 @@ SciLabHive is a full-stack scientific experiment management platform designed to
 - PostgreSQL, SQLAlchemy
 - JWT, OAuth2, bcrypt
 - fastapi-mail (Gmail SMTP for OTP)
+- httpx (Google & GitHub OAuth)
 
 **Frontend:**
 - React.js + Vite
@@ -94,6 +98,16 @@ SECRET_KEY=your_jwt_secret_key
 MAIL_USERNAME=yourgmail@gmail.com
 MAIL_PASSWORD=your_gmail_app_password
 MAIL_FROM=yourgmail@gmail.com
+
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
+
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+GITHUB_REDIRECT_URI=http://localhost:8000/auth/github/callback
+
+FRONTEND_URL=http://localhost:5173
 ```
 
 > **Note:** For `MAIL_PASSWORD` use a Gmail App Password — not your regular password.  
@@ -109,11 +123,9 @@ VITE_API_URL=http://localhost:8000
 
 ## 🗄️ Database Setup
 
-On first run, SQLAlchemy automatically creates all tables.
-Just start the server and all tables will be ready.
+On first run, SQLAlchemy automatically creates all tables. Just start the server and all tables will be ready.
 
-Then run these once in pgAdmin to enable cascade deletes at 
-the database level:
+Then run these **once** in pgAdmin to enable cascade deletes at the database level:
 
 ```sql
 ALTER TABLE experiments
@@ -148,6 +160,10 @@ ALTER TABLE experiment_parameters
 | PUT | `/auth/change-password` | Change password |
 | PUT | `/auth/upload-avatar` | Upload profile photo |
 | DELETE | `/auth/me` | Delete account |
+| GET | `/auth/google` | Google OAuth login |
+| GET | `/auth/google/callback` | Google OAuth callback |
+| GET | `/auth/github` | GitHub OAuth login |
+| GET | `/auth/github/callback` | GitHub OAuth callback |
 
 ### Experiments
 | Method | Endpoint | Description |
@@ -164,6 +180,7 @@ ALTER TABLE experiment_parameters
 | POST | `/experiment_results/{experiment_id}/results` | Add result |
 | PUT | `/experiment_results/{result_id}` | Update result |
 | DELETE | `/experiment_results/{result_id}` | Delete result |
+| GET | `/experiment_results/stats` | Get total results count |
 
 ---
 
@@ -173,10 +190,12 @@ ALTER TABLE experiment_parameters
 |-----------|--------|
 | Backend API | ✅ Complete |
 | Authentication + Email OTP | ✅ Complete |
+| Google & GitHub OAuth | ✅ Complete |
 | Dashboard UI | ✅ Complete |
 | Login / Register UI | ✅ Complete |
 | Experiment CRUD UI | ✅ Complete |
 | Results Logging UI | ✅ Complete |
+| Analytics Page | ✅ Complete |
 | AI Insights UI | ✅ Complete |
 | Profile Page | ✅ Complete |
 | Settings Page | ✅ Complete |
@@ -184,6 +203,7 @@ ALTER TABLE experiment_parameters
 | Real AI integration | 📅 Planned |
 | Collaborator system | 📅 Planned |
 | Mobile responsive | 📅 Planned |
+| Deployment | 📅 Planned |
 
 ---
 
@@ -193,12 +213,9 @@ ALTER TABLE experiment_parameters
 
 ---
 
-## 📄 License
-
-MIT
-
-
 ## 👤 Author
 
 **Tishani Gamalath**  
-Undergraduate Software Engineering Student
+Undergraduate Software Engineering Student  
+[GitHub](https://github.com/TishaSachi)
+
