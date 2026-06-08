@@ -101,7 +101,7 @@ class ExperimentResultResponse(BaseModel):
         from_attributes = True
 
 
-# --------------------------- User profile shemas ---------------------------------
+# --------------------------- User profile schemas ---------------------------------
 
 class UserUpdate(BaseModel):
     full_name: str
@@ -119,3 +119,29 @@ class AvatarResponse(BaseModel):
 # In schemas.py add:
 class AvatarUpdate(BaseModel):
     avatar_base64: str
+
+
+# --------------------- Collaborator schemas ----------------------------
+
+class CollaboratorInvite(BaseModel):
+    experiment_id: int
+    invite_email:  EmailStr
+    role:          str = "viewer"
+
+class CollaboratorResponse(BaseModel):
+    id:               int
+    experiment_id:    int
+    invite_email:     str
+    role:             str
+    status:           str
+    invited_at:       datetime
+    accepted_at:      Optional[datetime] = None
+    collaborator_id:  Optional[int]      = None
+
+    class Config:
+        from_attributes = True
+
+class CollaboratorWithUser(CollaboratorResponse):
+    collaborator_name:  Optional[str] = None
+    collaborator_email: Optional[str] = None
+    experiment_title:   Optional[str] = None

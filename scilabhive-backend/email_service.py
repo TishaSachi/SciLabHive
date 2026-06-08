@@ -35,3 +35,39 @@ async def send_otp_email(email: EmailStr, otp: str, name: str):
     )
     fm = FastMail(conf)
     await fm.send_message(message)
+
+async def send_invite_email(
+    email: str,
+    inviter_name: str,
+    experiment_title: str,
+    role: str,
+    invite_id: int
+):
+    accept_url = f"{os.getenv('FRONTEND_URL')}/invitations"
+    html = f"""
+    <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:32px">
+      <h2 style="color:#1e1b4b">You've been invited to collaborate!</h2>
+      <p style="color:#6d6a8a;margin:16px 0">
+        <strong>{inviter_name}</strong> has invited you to collaborate on 
+        <strong>{experiment_title}</strong> as a <strong>{role}</strong>.
+      </p>
+      <a href="{accept_url}" 
+         style="display:inline-block;background:#7c3aed;color:#fff;padding:12px 24px;
+                border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0">
+        View Invitation →
+      </a>
+      <p style="color:#a9a5c8;font-size:13px;margin-top:24px">
+        If you don't have a SciLabHive account yet, 
+        <a href="{os.getenv('FRONTEND_URL')}/register">create one here</a> 
+        using this email address.
+      </p>
+    </div>
+    """
+    message = MessageSchema(
+        subject    = f"{inviter_name} invited you to collaborate on SciLabHive",
+        recipients = [email],
+        body       = html,
+        subtype    = "html"
+    )
+    fm = FastMail(conf)
+    await fm.send_message(message)

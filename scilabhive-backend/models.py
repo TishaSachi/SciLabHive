@@ -78,6 +78,12 @@ class Experiment(Base):
         cascade="all, delete"
     )
 
+    collaborators = relationship(
+        "Collaborator", 
+        back_populates="experiment", 
+        cascade="all, delete"
+    )
+
 
 
 # --------------------------------------- EXPERIMENT PARAMETERS TABLE ---------------------------------------
@@ -123,4 +129,24 @@ class ExperimentResult(Base):
 
     # Relationship
     experiment = relationship("Experiment", back_populates="results")
+
+# ------------------------------------ COLLABORATOR TABLE --------------------------------------------
+
+class Collaborator(Base):
+    __tablename__ = "collaborators"
+
+    id                = Column(Integer, primary_key=True, index=True)
+    experiment_id     = Column(Integer, ForeignKey("experiments.experiment_id"), nullable=False)
+    owner_id          = Column(Integer, ForeignKey("users.id"), nullable=False)
+    collaborator_id   = Column(Integer, ForeignKey("users.id"), nullable=True)
+    invite_email      = Column(String(255), nullable=False)
+    role              = Column(String(20), default="viewer")
+    status            = Column(String(20), default="pending")
+    invited_at        = Column(DateTime(timezone=True), server_default=func.now())
+    accepted_at       = Column(DateTime(timezone=True), nullable=True)
+
+    # Relationships
+    experiment    = relationship("Experiment", back_populates="collaborators")
+    owner         = relationship("User", foreign_keys=[owner_id])
+    collaborator  = relationship("User", foreign_keys=[collaborator_id])
 

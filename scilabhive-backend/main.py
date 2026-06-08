@@ -4,7 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from database import engine
 from sqlalchemy import text
 from models import Base
-from routes import auth, users, experiments, experiment_parameters,experiment_results, oauth
+from routes import auth, users, experiments, experiment_parameters,experiment_results, oauth, collaborators
+
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
@@ -26,6 +27,7 @@ app.include_router(users.router)
 app.include_router(experiments.router)
 app.include_router(experiment_parameters.router)
 app.include_router(experiment_results.router)
+app.include_router(collaborators.router)
 
 @app.get("/")
 def test_db():
@@ -35,6 +37,12 @@ def test_db():
         return {"status": "Database connected successfully!"}
     except Exception as e:
         return {"error": str(e)}
+    
+
+
+
+
+
     
 
 

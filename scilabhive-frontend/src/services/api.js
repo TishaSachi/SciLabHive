@@ -116,3 +116,10 @@ export const getResultsStats = async () => {
   const response = await api.get('/experiment_results/stats');
   return response.data;
 };
+
+export const getMyCollaborators  = async () => (await api.get('/collaborators/my')).data;
+export const getMyInvitations    = async () => (await api.get('/collaborators/invitations')).data;
+export const inviteCollaborator  = async (data) => (await api.post('/collaborators/invite', data)).data;
+export const acceptInvitation    = async (id) => (await api.put(`/collaborators/${id}/accept`)).data;
+export const declineInvitation   = async (id) => (await api.put(`/collaborators/${id}/decline`)).data;
+export const removeCollaborator  = async (id) => await api.delete(`/collaborators/${id}`);
