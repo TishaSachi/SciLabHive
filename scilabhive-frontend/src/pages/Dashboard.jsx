@@ -9,6 +9,7 @@ import ResultsPage from "./ResultsPage";
 import ProfilePage from "./ProfilePage";
 import SettingsPage from "./SettingsPage";
 import AnalyticsPage from "./AnalyticsPage";
+import CollaboratePage from "./CollaboratePage";
 
 function PageContent({ activePage }) {
   return (
@@ -45,6 +46,9 @@ export default function Dashboard({ user: initialUser }) {
 
       case "analytics":
         return <AnalyticsPage />;
+
+      case "collaborate":
+        return <CollaboratePage />;
       default:
         return <PageContent activePage={activePage} />;
     }
