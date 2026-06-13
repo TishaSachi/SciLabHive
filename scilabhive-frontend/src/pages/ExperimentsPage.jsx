@@ -1,4 +1,5 @@
 import NewExperimentModal from "./NewExperimentModal";
+import ViewExperimentModal from "./ViewExperimentModal";
 import { useState, useEffect } from "react";
 import { getExperiments } from "../services/api"; // adjust path
 import "./ExperimentsPage.css";
@@ -22,7 +23,7 @@ function MiniStat({ value, label, accentColor }) {
 }
 
 // ── Experiments table ───────────────────────────
-function ExperimentsTable({ data }) {
+function ExperimentsTable({ data, onView, onEdit }) {
   return (
     <div className="exp-table-wrap">
       <table>
@@ -59,8 +60,18 @@ function ExperimentsTable({ data }) {
               </td>
               <td>
                 <div className="actions-cell">
-                  <button className="action-btn">View</button>
-                  <button className="action-btn">Edit</button>
+                  <button
+                    className="action-btn"
+                    onClick={() => onView(exp.raw)}
+                  >
+                    View
+                  </button>
+                  <button
+                    className="action-btn"
+                    onClick={() => onEdit(exp.raw)}
+                  >
+                    Edit
+                  </button>
                 </div>
               </td>
             </tr>
@@ -92,6 +103,8 @@ export default function ExperimentsPage() {
   const [statusFilter, setStatusFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [editingExp, setEditingExp] = useState(null);
+  const [viewingExp, setViewingExp] = useState(null);
 
   useEffect(() => {
     const fetch = async () => {
@@ -107,10 +120,10 @@ export default function ExperimentsPage() {
     fetch();
   }, []);
 
-  // Mapping ligic
-
+  // Mapping logic — keep a reference to the raw experiment for view/edit
   const mapped = experiments.map((e) => ({
     id: `#${e.experiment_id}`,
+    raw: e,
     title: e.title,
     type: e.experiment_type,
     status: e.status,
@@ -135,25 +148,22 @@ export default function ExperimentsPage() {
 
   // Add new experiment to the list optimistically
   const handleNewExperiment = (saved) => {
-    const newExp = {
-      id: `#${saved.experiment_id}`,
-      title: saved.title,
-      type: saved.experiment_type,
-      status: saved.status,
-      params: 0,
-      results: 0,
-      date: new Date(saved.created_at).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-    };
     setExperiments((prev) => [saved, ...prev]);
+  };
+
+  // Update experiment in the list after edit
+  const handleEditSave = (updated) => {
+    setExperiments((prev) =>
+      prev.map((e) =>
+        e.experiment_id === updated.experiment_id ? updated : e,
+      ),
+    );
+    setEditingExp(null);
   };
 
   return (
     <div>
-      {/* ── Header ── */}
+      {/* Header */}
       <div className="exp-page-header">
         <div>
           <div className="exp-page-title">Experiments</div>
@@ -177,7 +187,7 @@ export default function ExperimentsPage() {
         </button>
       </div>
 
-      {/* ── Mini stats ── */}
+      {/* Mini stats */}
       <div className="exp-stats-row">
         <MiniStat value={experiments.length} label="Total" />
         <MiniStat
@@ -197,7 +207,7 @@ export default function ExperimentsPage() {
         />
       </div>
 
-      {/* ── Toolbar ── */}
+      {/* Toolbar */}
       <div className="exp-toolbar">
         <div className="search-box">
           <svg
@@ -261,7 +271,7 @@ export default function ExperimentsPage() {
         </button>
       </div>
 
-      {/* ── Table ── */}
+      {/* Table */}
       {loading ? (
         <div
           style={{
@@ -273,14 +283,35 @@ export default function ExperimentsPage() {
           Loading experiments…
         </div>
       ) : (
-        <ExperimentsTable data={filtered} />
+        <ExperimentsTable
+          data={filtered}
+          onView={setViewingExp}
+          onEdit={setEditingExp}
+        />
       )}
 
-      {/* ── Modal ── */}
+      {/* Create Modal */}
       {showModal && (
         <NewExperimentModal
           onClose={() => setShowModal(false)}
           onSubmit={handleNewExperiment}
+        />
+      )}
+
+      {/* Edit Modal */}
+      {editingExp && (
+        <NewExperimentModal
+          initialData={editingExp}
+          onClose={() => setEditingExp(null)}
+          onSubmit={handleEditSave}
+        />
+      )}
+
+      {/* View Modal */}
+      {viewingExp && (
+        <ViewExperimentModal
+          experiment={viewingExp}
+          onClose={() => setViewingExp(null)}
         />
       )}
     </div>

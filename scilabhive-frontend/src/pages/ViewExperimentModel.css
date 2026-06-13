@@ -1,0 +1,13 @@
+/* ── Add this to ExperimentsPage.css ── */
+
+.view-value {
+  font-size: 14px;
+  color: var(--text);
+  padding: 9px 0;
+}
+
+.view-description {
+  line-height: 1.6;
+  color: var(--text-muted);
+  font-size: 13.5px;
+}

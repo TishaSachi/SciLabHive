@@ -29,6 +29,7 @@ app.include_router(experiment_parameters.router)
 app.include_router(experiment_results.router)
 app.include_router(collaborators.router)
 
+
 @app.get("/")
 def test_db():
     try:

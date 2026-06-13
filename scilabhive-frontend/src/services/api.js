@@ -30,6 +30,11 @@ export const createExperiment = async (data) => {
   return response.data;
 };
 
+export const updateExperiment = async (id, data) => {
+  const response = await api.put(`/experiments/${id}`, data);
+  return response.data;
+};
+
 export const getMe = async () => {
   const response = await api.get('/auth/me');
   return response.data;

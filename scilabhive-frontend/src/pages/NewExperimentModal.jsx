@@ -1,27 +1,40 @@
 import { useState } from "react";
-import { createExperiment } from "../services/api"; // adjust path
+import { createExperiment, updateExperiment } from "../services/api"; // adjust path
 import "./ExperimentsPage.css";
 
-export default function NewExperimentModal({ onClose, onSubmit }) {
+export default function NewExperimentModal({ onClose, onSubmit, initialData }) {
+  const isEdit = !!initialData;
+
   const [form, setForm] = useState({
-    title: "",
-    type: "",
-    status: "Planned",
-    description: "",
+    title: initialData?.title || "",
+    type: initialData?.experiment_type || "",
+    status: initialData?.status || "Planned",
+    description: initialData?.description || "",
   });
   const [loading, setLoading] = useState(false);
 
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
-
   const handleSubmit = async () => {
     if (!form.title || !form.type) return;
     setLoading(true);
     try {
-      const saved = await createExperiment(form);
+      const payload = {
+        title: form.title,
+        experiment_type: form.type,
+        status: form.status,
+        description: form.description,
+      };
+
+      let saved;
+      if (isEdit) {
+        saved = await updateExperiment(initialData.experiment_id, payload);
+      } else {
+        saved = await createExperiment(payload);
+      }
       onSubmit(saved);
       onClose();
     } catch (err) {
-      console.error(err);
+      console.error("Save failed:", err.response?.data || err);
     } finally {
       setLoading(false);
     }
@@ -36,7 +49,9 @@ export default function NewExperimentModal({ onClose, onSubmit }) {
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-box">
         <div className="modal-header">
-          <div className="modal-title">New Experiment</div>
+          <div className="modal-title">
+            {isEdit ? "Edit Experiment" : "New Experiment"}
+          </div>
           <button className="modal-close" onClick={onClose}>
             ✕
           </button>
@@ -107,7 +122,13 @@ export default function NewExperimentModal({ onClose, onSubmit }) {
               onClick={handleSubmit}
               disabled={loading || !form.title || !form.type}
             >
-              {loading ? "Creating…" : "Create Experiment"}
+              {loading
+                ? isEdit
+                  ? "Saving…"
+                  : "Creating…"
+                : isEdit
+                  ? "Save Changes"
+                  : "Create Experiment"}
             </button>
           </div>
         </div>
