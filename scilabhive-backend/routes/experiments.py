@@ -68,6 +68,7 @@ def update_experiment(
     experiment.title = updated_data.title
     experiment.experiment_type = updated_data.experiment_type
     experiment.description = updated_data.description
+    experiment.updated_at      = datetime.now(timezone.utc)
     experiment.status = updated_data.status
 
     db.commit()

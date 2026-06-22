@@ -78,13 +78,17 @@ export function DisplayActivity({ experiments = [] }) {
   const COLORS = ["#7c3aed", "#0d9488", "#d97706", "#e11d48", "#059669"];
 
   const activities = [...experiments]
-    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .sort((a, b) => {
+      const dateA = new Date(a.updated_at || a.created_at);
+      const dateB = new Date(b.updated_at || b.created_at);
+      return dateB - dateA;
+    })
     .slice(0, 4)
     .map((e, i) => ({
       color: COLORS[i % COLORS.length],
       bold: e.title,
-      text: `— ${e.status}`,
-      time: new Date(e.created_at).toLocaleDateString("en-US", {
+      text: e.updated_at ? "— updated" : `— ${e.status}`,
+      time: new Date(e.updated_at || e.created_at).toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
       }),

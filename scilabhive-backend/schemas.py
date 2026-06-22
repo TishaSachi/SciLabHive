@@ -58,6 +58,7 @@ class ExperimentResponse(BaseModel):
     user_id: int
     status: str
     created_at: datetime
+    updated_at: datetime | None = None 
 
     class Config:
         from_attributes = True

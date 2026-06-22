@@ -34,7 +34,7 @@ function ExperimentsTable({ data, onView, onEdit }) {
             <th>Status</th>
             <th>Parameters</th>
             <th>Results</th>
-            <th>Date</th>
+            <th>Created_date</th>
             <th>Actions</th>
           </tr>
         </thead>
