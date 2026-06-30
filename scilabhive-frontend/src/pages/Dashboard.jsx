@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import "./dashboard.css";
@@ -10,6 +10,7 @@ import ProfilePage from "./ProfilePage";
 import SettingsPage from "./SettingsPage";
 import AnalyticsPage from "./AnalyticsPage";
 import CollaboratePage from "./CollaboratePage";
+import { getExperiments, getMyCollaborators, getMe } from "../services/api";
 
 function PageContent({ activePage }) {
   return (
@@ -23,6 +24,43 @@ function PageContent({ activePage }) {
 export default function Dashboard({ user: initialUser }) {
   const [activePage, setActivePage] = useState("dashboard");
   const [user, setUser] = useState(initialUser);
+  const [experimentCount, setExperimentCount] = useState(0);
+  const [collaboratorCount, setCollaboratorCount] = useState(0);
+
+  // Fetch fresh user data on mount — fixes stale avatar/profile data
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const me = await getMe();
+        setUser(me);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  // Fetch sidebar badge counts — refetch whenever the active page changes
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const [exps, collabs] = await Promise.all([
+          getExperiments(),
+          getMyCollaborators(),
+        ]);
+        setExperimentCount(exps.length);
+        setCollaboratorCount(
+          collabs.filter((c) => c.status === "active" || c.status === "pending")
+            .length,
+        );
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchCounts();
+  }, [activePage]);
 
   const renderPage = () => {
     switch (activePage) {
@@ -49,6 +87,7 @@ export default function Dashboard({ user: initialUser }) {
 
       case "collaborate":
         return <CollaboratePage />;
+
       default:
         return <PageContent activePage={activePage} />;
     }
@@ -56,7 +95,13 @@ export default function Dashboard({ user: initialUser }) {
 
   return (
     <div className="dashboard-shell">
-      <Sidebar activePage={activePage} onNavigate={setActivePage} user={user} />
+      <Sidebar
+        activePage={activePage}
+        onNavigate={setActivePage}
+        user={user}
+        experimentCount={experimentCount}
+        collaboratorCount={collaboratorCount}
+      />
       <div className="dashboard-main">
         <Topbar
           activePage={activePage}

@@ -9,6 +9,7 @@ export const api = axios.create({
 // Attach token automatically if exists
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
+  console.log("INTERCEPTOR RUNNING — token:", token, "URL:", config.url);
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -21,12 +22,7 @@ export const getExperiments = async () => {
 };
 
 export const createExperiment = async (data) => {
-  const response = await api.post('/experiments/', {
-    title: data.title,
-    experiment_type: data.type,
-    description: data.description,
-    status: data.status,
-  });
+  const response = await api.post('/experiments/', data);
   return response.data;
 };
 
@@ -128,3 +124,4 @@ export const inviteCollaborator  = async (data) => (await api.post('/collaborato
 export const acceptInvitation    = async (id) => (await api.put(`/collaborators/${id}/accept`)).data;
 export const declineInvitation   = async (id) => (await api.put(`/collaborators/${id}/decline`)).data;
 export const removeCollaborator  = async (id) => await api.delete(`/collaborators/${id}`);
+

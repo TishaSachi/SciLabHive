@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException,status
 from sqlalchemy.orm import Session
+from models import Collaborator
 
 from database import get_db
 from models import Experiment, ExperimentResult
@@ -34,7 +35,14 @@ def create_experiment_result(
     if not experiment:
         raise HTTPException(status_code=404, detail="Experiment not found")
 
-    if experiment.user_id != current_user.id:
+    is_owner = experiment.user_id == current_user.id
+    is_collab = db.query(Collaborator).filter(
+        Collaborator.experiment_id == experiment_id,
+        Collaborator.invite_email  == current_user.email,
+        Collaborator.status        == "active",
+        Collaborator.role.in_(['contributor', 'editor'])
+    ).first()
+    if not is_owner and not is_collab:
         raise HTTPException(status_code=403, detail="Not authorized")
 
     new_result = ExperimentResult(
@@ -68,7 +76,14 @@ def get_experiment_results(
     if not experiment:
         raise HTTPException(status_code=404, detail="Experiment not found")
 
-    if experiment.user_id != current_user.id:
+    is_owner = experiment.user_id == current_user.id
+    is_collab = db.query(Collaborator).filter(
+        Collaborator.experiment_id == experiment_id,
+        Collaborator.invite_email  == current_user.email,
+        Collaborator.status        == "active"
+    ).first()
+
+    if not is_owner and not is_collab:
         raise HTTPException(status_code=403, detail="Not authorized")
 
     return db.query(ExperimentResult).filter(

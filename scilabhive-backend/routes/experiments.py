@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from datetime import datetime, timezone
 
 from database import get_db
 from models import Experiment
 from schemas import ExperimentCreate, ExperimentResponse
 from security import get_current_user
+from models import Collaborator
 
 router = APIRouter(
     prefix="/experiments",
@@ -38,42 +40,57 @@ def create_experiment(
 # ----------------------------------- GET my experiments -------------------------------------
 
 @router.get("/", response_model=list[ExperimentResponse])
-def get_my_experiments(
-    skip: int = 0,
-    limit: int = 50,
+def get_experiments(
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
-    return db.query(Experiment).filter(
+    # Get own experiments
+    own = db.query(Experiment).filter(
         Experiment.user_id == current_user.id
-    ).offset(skip).limit(limit).all()
+    ).all()
+
+    # Get experiments shared with this user as collaborator
+    collab_exp_ids = [
+        c.experiment_id for c in
+        db.query(Collaborator).filter(
+            Collaborator.invite_email == current_user.email,
+            Collaborator.status == "active"
+        ).all()
+    ]
+    shared = db.query(Experiment).filter(
+        Experiment.experiment_id.in_(collab_exp_ids)
+    ).all() if collab_exp_ids else []
+
+    return own + shared
 
 # ---------------------------------- update the experiment -------------------------------
 
 @router.put("/{experiment_id}", response_model=ExperimentResponse)
 def update_experiment(
     experiment_id: int,
-    updated_data: ExperimentCreate,
+    data: ExperimentCreate,
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
+    role = get_user_role_for_experiment(
+        experiment_id, current_user.id, current_user.email, db
+    )
+
+    print(f"DEBUG → experiment_id={experiment_id}, current_user.id={current_user.id}, role={role}")
+
+    if role not in ('owner', 'editor'):
+        raise HTTPException(status_code=403, detail="Not authorized")
+
     experiment = db.query(Experiment).filter(
-        Experiment.experiment_id == experiment_id,
-        Experiment.user_id == current_user.id
+        Experiment.experiment_id == experiment_id
     ).first()
-
-    if not experiment:
-        raise HTTPException(status_code=404, detail="Experiment not found")
-
-    experiment.title = updated_data.title
-    experiment.experiment_type = updated_data.experiment_type
-    experiment.description = updated_data.description
+    experiment.title           = data.title
+    experiment.experiment_type = data.experiment_type
+    experiment.status          = data.status
+    experiment.description     = data.description
     experiment.updated_at      = datetime.now(timezone.utc)
-    experiment.status = updated_data.status
-
     db.commit()
     db.refresh(experiment)
-
     return experiment
 
 
@@ -97,3 +114,23 @@ def delete_experiment(
 
     return
 
+
+# ---------------- Get user roles ------------------------
+
+
+
+def get_user_role_for_experiment(experiment_id, user_id, user_email, db):
+    """Returns 'owner', 'editor', 'contributor', 'viewer', or None"""
+    exp = db.query(Experiment).filter(
+        Experiment.experiment_id == experiment_id
+    ).first()
+    if not exp:
+        return None
+    if exp.user_id == user_id:
+        return 'owner'
+    collab = db.query(Collaborator).filter(
+        Collaborator.experiment_id == experiment_id,
+        Collaborator.invite_email == user_email,
+        Collaborator.status == "active"
+    ).first()
+    return collab.role if collab else None

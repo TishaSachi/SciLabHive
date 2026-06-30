@@ -1,31 +1,5 @@
 import "./Sidebar.css";
 
-const NAV_ITEMS = [
-  {
-    section: "Workspace",
-    items: [
-      { id: "dashboard", label: "Dashboard", icon: "grid" },
-      { id: "experiments", label: "Experiments", icon: "flask", badge: 12 },
-      { id: "results", label: "Results", icon: "pulse" },
-      { id: "collaborate", label: "Collaborate", icon: "users", badge: 3 },
-    ],
-  },
-  {
-    section: "Insights",
-    items: [
-      { id: "analytics", label: "Analytics", icon: "bar-chart" },
-      { id: "ai", label: "AI Insights", icon: "clock" },
-    ],
-  },
-  {
-    section: "Account",
-    items: [
-      { id: "profile", label: "Profile", icon: "user" },
-      { id: "settings", label: "Settings", icon: "settings" },
-    ],
-  },
-];
-
 const icons = {
   grid: (
     <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -80,7 +54,13 @@ const icons = {
   ),
 };
 
-export default function Sidebar({ activePage, onNavigate, user }) {
+export default function Sidebar({
+  activePage,
+  onNavigate,
+  user,
+  experimentCount,
+  collaboratorCount,
+}) {
   const initials = user?.full_name
     ? user.full_name
         .split(" ")
@@ -89,6 +69,42 @@ export default function Sidebar({ activePage, onNavigate, user }) {
         .slice(0, 2)
         .toUpperCase()
     : "U";
+
+  const navItems = [
+    {
+      section: "Workspace",
+      items: [
+        { id: "dashboard", label: "Dashboard", icon: "grid" },
+        {
+          id: "experiments",
+          label: "Experiments",
+          icon: "flask",
+          badge: experimentCount > 0 ? experimentCount : null,
+        },
+        { id: "results", label: "Results", icon: "pulse" },
+        {
+          id: "collaborate",
+          label: "Collaborate",
+          icon: "users",
+          badge: collaboratorCount > 0 ? collaboratorCount : null,
+        },
+      ],
+    },
+    {
+      section: "Insights",
+      items: [
+        { id: "analytics", label: "Analytics", icon: "bar-chart" },
+        { id: "ai", label: "AI Insights", icon: "clock" },
+      ],
+    },
+    {
+      section: "Account",
+      items: [
+        { id: "profile", label: "Profile", icon: "user" },
+        { id: "settings", label: "Settings", icon: "settings" },
+      ],
+    },
+  ];
 
   return (
     <aside className="sidebar">
@@ -100,7 +116,7 @@ export default function Sidebar({ activePage, onNavigate, user }) {
       </div>
 
       <nav className="sidebar-nav">
-        {NAV_ITEMS.map((group) => (
+        {navItems.map((group) => (
           <div key={group.section}>
             <div className="nav-section-label">{group.section}</div>
             {group.items.map((item) => (
@@ -111,7 +127,9 @@ export default function Sidebar({ activePage, onNavigate, user }) {
               >
                 {icons[item.icon]}
                 {item.label}
-                {item.badge && <span className="nav-badge">{item.badge}</span>}
+                {item.badge ? (
+                  <span className="nav-badge">{item.badge}</span>
+                ) : null}
               </button>
             ))}
           </div>
@@ -120,7 +138,22 @@ export default function Sidebar({ activePage, onNavigate, user }) {
 
       <div className="sidebar-bottom">
         <div className="sidebar-user" onClick={() => onNavigate("profile")}>
-          <div className="sidebar-avatar-sm">{initials}</div>
+          <div className="sidebar-avatar-sm">
+            {user?.avatar_url ? (
+              <img
+                src={user.avatar_url}
+                alt="avatar"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
+              />
+            ) : (
+              initials
+            )}
+          </div>
           <div className="sidebar-user-info">
             <div className="sidebar-user-name">{user?.full_name || "User"}</div>
             <div className="sidebar-user-role">

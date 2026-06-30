@@ -21,6 +21,18 @@ async def invite_collaborator(
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
+    print(f"DEBUG → experiment_id={data.experiment_id} (type={type(data.experiment_id)}), current_user.id={current_user.id}, email={data.invite_email}")
+
+    experiment = db.query(Experiment).filter(
+        Experiment.experiment_id == data.experiment_id,
+        Experiment.user_id == current_user.id
+    ).first()
+
+    print(f"DEBUG → experiment found: {experiment}")
+
+    if not experiment:
+        raise HTTPException(status_code=404, detail="Experiment not found")
+
     # Check experiment belongs to current user
     experiment = db.query(Experiment).filter(
         Experiment.experiment_id == data.experiment_id,
